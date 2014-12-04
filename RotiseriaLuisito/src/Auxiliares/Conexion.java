@@ -32,11 +32,13 @@ public class Conexion{
     private String jdbc;
     private String url;
     private String port;
-    private boolean seguridad_integrada;
+    //puerto por defecto del Sistema Gestor de Base de Datos.
+    private String port_default = "3306";
     private String usuario;
     private String clave;    
     private String driverClassName;
     private String base_datos;
+    
     private String razon_social;
     
     private Connection conn = null;
@@ -48,11 +50,10 @@ public class Conexion{
     
     public Conexion() {
         //asigno parametros basicos, ya que los valores los leo del archivo        
-        this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"; 
-        this.jdbc = "jdbc:sqlserver://";
-        this.port = "1433";
+        this.driverClassName = "com.mysql.jdbc.Driver"; 
+        this.jdbc = "jdbc:mysql://";
+        this.port = this.port_default;
         this.url = "";
-        this.seguridad_integrada = true;
         this.usuario="";
         this.clave="";
         this.base_datos="";
@@ -66,9 +67,6 @@ public class Conexion{
     }    
     public String getPort() {
         return port;
-    }  
-    public boolean getSeguridad_integrada() {
-        return seguridad_integrada;
     }
     public String getUsuario() {
         return usuario;
@@ -90,14 +88,7 @@ public class Conexion{
     }
     public String getUrl_Conexion_Sistema (){
         String urlConexion = jdbc+url+":"+port+";";       
-              
-        if (seguridad_integrada){
-            urlConexion +="integratedSecurity=true;";
-        }
-        else{
-            urlConexion +="user="+usuario+";password="+clave+";";
-         }
-       
+        urlConexion +="user="+usuario+";password="+clave+";";
         return urlConexion;       
     }
     
@@ -108,9 +99,6 @@ public class Conexion{
     }    
      public void setPort(String port) {
         this.port = port;
-    }     
-    public void setSeguridad_integrada(boolean seguridad_integrada) {
-        this.seguridad_integrada = seguridad_integrada;
     } 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
@@ -138,31 +126,24 @@ public class Conexion{
      * sirven para gestionar una conexion a un SGBD. Decuelve true si lo logra.
      * @param n_url url de la conexion ej:localhost
      * @param n_port puerto abierto de conexion
-     * @param seg_int true indica que se utilizara seguridad integrada
      * @param n_usu usuario de conexion, en caso se no usar seguridad integrada
      * @param n_cla clave, idem usuario.
      * @return 
      */
-    public boolean validarConexion (String n_url, String n_port, boolean seg_int, String n_usu, String n_cla){
+    public boolean validarConexion (String n_url, String n_port, String n_usu, String n_cla){
         boolean valida = false;
         
         if (! n_port.equals("")){
             port = n_port;
         }
         else{
-            port = "1433";
+            port = this.port_default;
         }    
-        
-        String urlConexion = jdbc+n_url+":"+port+";";        
-        if (seg_int){
-            urlConexion +="integratedSecurity=true;";
-        }
-        else{
-             urlConexion +="user="+n_usu+";password="+n_cla+";";
-        }
-        
+
         try {
-            conn = DriverManager.getConnection(urlConexion);
+            Class.forName("com.mysql.jdbc.Driver");
+            String urlConexion = jdbc+n_url+":"+n_port+"/?user="+n_usu+"&password="+n_cla;
+            this.conn = DriverManager.getConnection(urlConexion);            
             valida = true;
             conn.close();
         } catch (SQLException ex) {
@@ -182,6 +163,8 @@ public class Conexion{
                 error+="\n                                        ";
             }            
             JOptionPane.showMessageDialog(null,"Código del ERROR: "+ex.getErrorCode()+"\nMensaje del ERROR: "+ error, "Error al intentar establecer la Conexión", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return valida;
@@ -204,7 +187,6 @@ public class Conexion{
             
             pw.println(c.getUrl());
             pw.println(c.getPort());
-            pw.println(c.getSeguridad_integrada());
             pw.println(c.getUsuario());
             pw.println(c.getClave());
             
@@ -243,7 +225,6 @@ public class Conexion{
            
            this.url=br.readLine();
            this.port=br.readLine();
-           this.seguridad_integrada=Boolean.parseBoolean(br.readLine());
            this.usuario=br.readLine();
            this.clave=br.readLine();    
                        
@@ -325,18 +306,17 @@ public class Conexion{
         }
         
         //si url no es vacio, los parametros ya fueron leidos del archivo        
-        urlConexion = jdbc+url+":"+port+";";
+        urlConexion = jdbc+url+":"+port+"/";
         
         if (!"".equals(base_datos)){
-            urlConexion +="databaseName="+base_datos+";";
-        }             
-        if (seguridad_integrada){
-            urlConexion +="integratedSecurity=true;";
-        }
+            urlConexion+=base_datos+"?";
+        }  
         else{
-            urlConexion +="user="+usuario+";password="+clave+";";
-         }
-        //System.out.println("CONEXION: "+urlConexion);
+            urlConexion+="?";
+        }
+        
+        urlConexion +="user="+usuario+"&password="+clave;
+        System.out.println("CONEXION: "+urlConexion);
         return urlConexion;
     }
     
@@ -448,7 +428,7 @@ public class Conexion{
     }
         
    //renombrar a abrir_Conexion
-   public void Connection ()
+   /*public void Connection ()
     {     
         try
         {                           
@@ -474,12 +454,34 @@ public class Conexion{
             JOptionPane.showMessageDialog(null, ex, "Error Tipo 2 en la Conexión con la BD: "+"\n"+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
             conn=null;
         }
+    }*/
+   
+   public void abrirConexion ()
+    {     
+        try
+        {                           
+            Class.forName("com.mysql.jdbc.Driver");
+            String cadenaUrl=getUrlConexion();            
+            this.conn = DriverManager.getConnection(cadenaUrl);
+            //this.conn = DriverManager.getConnection(urlConexion,this.usuario,this.clave);             
+        }
+        catch(ClassNotFoundException ex)
+        {            
+            JOptionPane.showMessageDialog(null, ex, "Error Tipo 1 en la Conexión con la BD: "+"\n"+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+            conn=null;
+        }
+        catch(SQLException ex)
+        {
+            
+            JOptionPane.showMessageDialog(null, ex, "Error Tipo 2 en la Conexión con la BD: "+"\n"+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+            conn=null;
+        }
     }
    
    /**
     * metodo utilizado para liberar la Conexion con el SGBD
     */
-    public void cierraConexion() {
+    public void cerrarConexion() {
         try {
             //System.out.println("[[[[[[[[[[[[[[[[[[[[[[[ CEEEEERRRREEEE  ]]]]]]]]]]]]]]]]]]]");
             this.conn.close();

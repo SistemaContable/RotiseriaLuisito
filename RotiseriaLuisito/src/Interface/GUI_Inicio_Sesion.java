@@ -245,7 +245,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
             if (comboboxTipoUsuario.getSelectedIndex()==1){
                 try {                   
                     r_con.setBase_datos(nombre_BD_Sistema);
-                    r_con.Connection();
+                    r_con.abrirConexion();
                     rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
                                     fieldUsuario.getText()+"' AND usr_contrasenia = '"+
                                     passwordfieldContrasena.getText()+"';");
@@ -263,7 +263,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                         msj_usuario_Error("Usuario del Sistema o Contraseña INCORRECTOS.");
                         fieldUsuario.requestFocus();
                     }
-                    r_con.cierraConexion();
+                    r_con.cerrarConexion();
                 } 
                 catch (SQLException ex) {
                     Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
@@ -273,7 +273,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                 try {
                     if (comboboxEmpresa.getItemCount() > 0){
                         r_con.setBase_datos(nombre_BD_Sistema);
-                        r_con.Connection();
+                        r_con.abrirConexion();
                         String empresa = comboboxEmpresa.getSelectedItem().toString();                   
                         rsl = r_con.Consultar("SELECT * FROM Empresas WHERE razon_social = '"+
                                             ""+empresa+"';");
@@ -282,10 +282,10 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                             String nameinterno = rsl.getString(2);
                         rsl.close();
                     
-                        r_con.cierraConexion();
+                        r_con.cerrarConexion();
                         r_con.setBase_datos(nameinterno);
                         r_con.setRazon_social(razon_social);
-                        r_con.Connection();                     
+                        r_con.abrirConexion();                     
                         
                         String usuario="";
                         usuario=fieldUsuario.getText();
@@ -323,12 +323,12 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                     else{                                
                         msj_usuario_Error("No hay Empresas Registradas.");
                     }
-                    r_con.cierraConexion();
+                    r_con.cerrarConexion();
                 } 
                 catch (SQLException ex) {
                     Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
-                    r_con.cierraConexion();
+                    r_con.cerrarConexion();
                 }
             }
         }
@@ -344,7 +344,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
             try {
                 this.vaciarMensaje();
                 r_con.setBase_datos(nombre_BD_Sistema);
-                r_con.Connection();
+                r_con.abrirConexion();
                 rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
                             fieldUsuario.getText()+"' AND usr_contrasenia = '"+
                             passwordfieldContrasena.getText()+"';");
@@ -361,7 +361,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                     msj_usuario_Error("Usuario del Sistema o Contraseña INCORRECTOS.");
                     fieldUsuario.requestFocus();
                 }
-                r_con.cierraConexion();
+                r_con.cerrarConexion();
             } catch (SQLException ex) {
                 Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -408,7 +408,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
     }//GEN-LAST:event_comboboxEmpresaItemStateChanged
     
     private void cargarComboBox(){
-        r_con.Connection();
+        r_con.abrirConexion();
         comboboxEmpresa.removeAllItems();
         Vector<Vector<String>> v = r_con.getContenidoTabla("SELECT * FROM Empresas");
         for(Vector<String>a:v){
@@ -416,7 +416,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         }    
         //jComboBox1.addItem("< Nueva_Empresa >");
         v=null;
-        r_con.cierraConexion();
+        r_con.cerrarConexion();
     }
     
 

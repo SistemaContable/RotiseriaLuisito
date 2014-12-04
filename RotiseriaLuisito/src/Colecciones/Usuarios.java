@@ -29,7 +29,7 @@ public class Usuarios {
     public boolean existe(String usr){
         boolean exis = false;
         try {
-            r_con.Connection();
+            r_con.abrirConexion();
             String consulta="SELECT * FROM "+tabla+" WHERE usr_nombre_usuario='"+usr+"'";
             Statement stmt=r_con.getStatement();
             ResultSet rs;
@@ -38,7 +38,7 @@ public class Usuarios {
                 exis = true;
             stmt.close();
             rs.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
         } catch (SQLException ex) {
             System.out.println("Error Interno: Usuarios - existe");
             return false;
@@ -49,7 +49,7 @@ public class Usuarios {
     public Usuario getUsuario(String usr){
         Usuario u=new Usuario();
         try {
-            r_con.Connection();
+            r_con.abrirConexion();
             String consulta="SELECT * FROM "+tabla+" WHERE usr_nombre_usuario='"+usr+"'";
             Statement stmt=r_con.getStatement();
             ResultSet rs;
@@ -67,16 +67,16 @@ public class Usuarios {
             else{
                 stmt.close();
                 rs.close();
-                r_con.cierraConexion();
+                r_con.cerrarConexion();
                 return null;
             }
             stmt.close();
             rs.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
             
         } catch (SQLException ex) {
             System.out.println("Error Interno: Usuarios - getUsuario");
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
             return null;
         }
         
@@ -85,14 +85,14 @@ public class Usuarios {
     
     public void eliminar(String usr){
         try {
-            r_con.Connection();
+            r_con.abrirConexion();
             String consulta="UPDATE "+tabla+" SET usr_existe=0 WHERE usr_nombre_usuario='"+usr+"'";
             Statement stmt=r_con.getStatement();            
             stmt.executeUpdate(consulta);
             stmt.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
         } catch (SQLException ex) {
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
             System.out.println("Error Interno: Usuarios - eliminar");
         }
     }
@@ -100,7 +100,7 @@ public class Usuarios {
     public boolean insertar(Usuario u){
         boolean inserto = false;
         try {
-            r_con.Connection();
+            r_con.abrirConexion();
             PreparedStatement consultaAlta;
             String alta="INSERT INTO "+tabla+" VALUES (?,?,?,?,?,?)";
             consultaAlta=r_con.getConn().prepareStatement(alta);
@@ -114,19 +114,19 @@ public class Usuarios {
             consultaAlta.executeUpdate();
             inserto = true;
             consultaAlta.close();
-            r_con.cierraConexion();                                            
+            r_con.cerrarConexion();                                            
         
         } catch (SQLException ex) {
             inserto = false;
             System.out.println("Error Interno: Usuarios - insertar");
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
         }
         return inserto;
     }
     
     public void modificar(Usuario u){
         try {
-            r_con.Connection();
+            r_con.abrirConexion();
             PreparedStatement consultaModificar;
             String mod="UPDATE "+tabla+" SET usr_nombre_usuario=?,usr_nombre=?,usr_apellido=?,usr_contraseña=?,usr_id_perfil=?,usr_existe=? WHERE usr_nombre_usuario='"+u.getUsuario()+"'";
             consultaModificar=r_con.getConn().prepareStatement(mod);
@@ -140,10 +140,10 @@ public class Usuarios {
             consultaModificar.executeUpdate();// insert update delete
             
             consultaModificar.close();
-            r_con.cierraConexion();                                       
+            r_con.cerrarConexion();                                       
         
         } catch (SQLException ex) {
-            r_con.cierraConexion(); 
+            r_con.cerrarConexion(); 
             System.out.println("Error Interno: Usuarios - modificar");
         }      
     }

@@ -490,7 +490,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     // TODO add your handling code here: 
-    r_con.Connection();
+    r_con.abrirConexion();
     if(jButton3.getText().equals("Nuevo Perfil")){
         jTable1.setEnabled(true);   
         jButton3.setText("Crear Perfil");
@@ -560,7 +560,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
             catch (SQLException ex) {
                     Logger.getLogger(GUI_Usuario.class.getName()).log(Level.SEVERE, null, ex);
             }        
-        r_con.cierraConexion();
+        r_con.cerrarConexion();
         cargarComboBox();
         jComboBox1.setSelectedIndex(jComboBox1.getItemCount()-1);
     }
@@ -661,7 +661,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         Vector<Vector<Object>>matriz = new Vector();        
         Vector<Object>fila;
         int id_modulo,id_tarea;id_modulo=-1;id_tarea=-1;
-        r_con.Connection();
+        r_con.abrirConexion();
         ResultSet rs;        
         try{
             for(Vector<String>modulos:v){
@@ -687,8 +687,8 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                 matriz.add(fila);
             } 
         
-        r_con.cierraConexion();
-        }catch(Exception e){r_con.cierraConexion();}
+        r_con.cerrarConexion();
+        }catch(Exception e){r_con.cerrarConexion();}
         return matriz;
     }
     

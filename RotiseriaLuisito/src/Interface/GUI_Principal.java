@@ -75,7 +75,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     // Vector=(modulo,tarea,tarea,tarea)
     public void habilitarFunciones(int perfil){                           
         String consulta="select per_id_perfil,per_id_modulo,per_id_tarea from permiso where per_id_perfil="+perfil;
-        r_con.Connection();
+        r_con.abrirConexion();
         ResultSet rs=r_con.Consultar(consulta);
         Vector<Vector<Integer>>modulosTarea=new Vector();
         boolean existe=false;
@@ -106,7 +106,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         }
         habilitarMenuPerfil(modulosTarea);
         jMenu7.setEnabled(true);
-        r_con.cierraConexion();
+        r_con.cerrarConexion();
     }    
    
     /**

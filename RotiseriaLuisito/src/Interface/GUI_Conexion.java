@@ -37,8 +37,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
         //creo la conexion
         r_con = new Conexion();
         
-        //para panel 1
-        radiobuttonSI.setSelected(true);        
+        //para panel 1       
         buttonGuardar.setEnabled(false);
         //para panel 2
         checkboxDirectorio.setSelected(true);
@@ -64,8 +63,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
         panelConexion = new javax.swing.JPanel();
         fieldURL = new javax.swing.JTextField();
         fieldPuerto = new javax.swing.JTextField();
-        radiobuttonSI = new javax.swing.JRadioButton();
-        radiobuttonUyC = new javax.swing.JRadioButton();
         fieldUsuario = new javax.swing.JTextField();
         fieldContrasena = new javax.swing.JTextField();
         buttonProbar = new javax.swing.JButton();
@@ -122,24 +119,8 @@ public class GUI_Conexion extends javax.swing.JFrame {
         fieldURL.setText("localhost");
         fieldURL.setToolTipText("");
 
-        fieldPuerto.setText("1433");
+        fieldPuerto.setText("3306");
         fieldPuerto.setToolTipText("");
-
-        buttonGroup1.add(radiobuttonSI);
-        radiobuttonSI.setText("Seguridad Integrada");
-        radiobuttonSI.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                radiobuttonSIItemStateChanged(evt);
-            }
-        });
-
-        buttonGroup1.add(radiobuttonUyC);
-        radiobuttonUyC.setText("Usuario y Contraseña");
-        radiobuttonUyC.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                radiobuttonUyCItemStateChanged(evt);
-            }
-        });
 
         fieldUsuario.setToolTipText("");
 
@@ -175,7 +156,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
         labelPuerto.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         labelPuerto.setText("Puerto:");
 
-        labelDefecto.setText("Defecto: 1433");
+        labelDefecto.setText("Defecto: 3306");
 
         labelUsuario.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         labelUsuario.setText("Usuario:");
@@ -194,33 +175,25 @@ public class GUI_Conexion extends javax.swing.JFrame {
         panelConexionLayout.setHorizontalGroup(
             panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConexionLayout.createSequentialGroup()
-                .addGap(0, 51, Short.MAX_VALUE)
+                .addGap(0, 56, Short.MAX_VALUE)
                 .addComponent(labelAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 610, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelConexionLayout.createSequentialGroup()
                 .addContainerGap(132, Short.MAX_VALUE)
                 .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConexionLayout.createSequentialGroup()
                         .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConexionLayout.createSequentialGroup()
-                                .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelURL, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(labelPuerto, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addGap(18, 18, 18)
-                                .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelConexionLayout.createSequentialGroup()
-                                        .addComponent(fieldPuerto, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(labelDefecto))
-                                    .addGroup(panelConexionLayout.createSequentialGroup()
-                                        .addComponent(fieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(labelEj))))
+                            .addComponent(labelURL, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelPuerto, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelConexionLayout.createSequentialGroup()
-                                .addGap(56, 56, 56)
-                                .addComponent(radiobuttonSI)
-                                .addGap(30, 30, 30)
-                                .addComponent(radiobuttonUyC)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(fieldPuerto, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelDefecto))
+                            .addGroup(panelConexionLayout.createSequentialGroup()
+                                .addComponent(fieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelEj)))
                         .addGap(78, 78, 78))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConexionLayout.createSequentialGroup()
                         .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -253,11 +226,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                     .addComponent(fieldPuerto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelDefecto)
                     .addComponent(labelPuerto))
-                .addGap(18, 18, 18)
-                .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radiobuttonSI)
-                    .addComponent(radiobuttonUyC))
-                .addGap(18, 18, 18)
+                .addGap(59, 59, 59)
                 .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelUsuario)
                     .addComponent(fieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -267,11 +236,11 @@ public class GUI_Conexion extends javax.swing.JFrame {
                     .addComponent(labelContrasena))
                 .addGap(18, 18, 18)
                 .addComponent(labelMensaje)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(buttonProbar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonGuardar)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         tabbedPaneOpciones.addTab("Conexión", panelConexion);
@@ -561,7 +530,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
             tabbedPaneOpciones.setSelectedIndex(0);
         }
         else{
-            r_con.Connection();
+            r_con.abrirConexion();
             //caso en que no existe la base de datos del Sistema
             if (! r_con.existeDatabase(nombre_BD_Sistema)){
                 tabbedPaneOpciones.setEnabledAt(1, true);
@@ -569,13 +538,13 @@ public class GUI_Conexion extends javax.swing.JFrame {
             }
             else{                            
                 //seteo el nombre de la base de datos del sistema
-                r_con.cierraConexion();
+                r_con.cerrarConexion();
                 r_con.setBase_datos(nombre_BD_Sistema);    
                 //al seleccionar el 3er panel va a listar los usuarios y cierra la conexion
                 tabbedPaneOpciones.setEnabledAt(2, true);
                 tabbedPaneOpciones.setSelectedIndex(2);
                 //vuelvo a abrir la conexion
-                r_con.Connection();
+                r_con.abrirConexion();
                 if (r_con.cantidadRegistros("Usuarios")>0){                     
                     buttonCancelar.setText("Salir");                    
                 } 
@@ -583,9 +552,9 @@ public class GUI_Conexion extends javax.swing.JFrame {
                     this.msj_usuario_Error("Registre al menos un Usuario en el Sistema.");
                 }
                 cargarUsuarios ();
-                r_con.cierraConexion();
+                r_con.cerrarConexion();
             }
-             r_con.cierraConexion();
+             r_con.cerrarConexion();
         }       
     }
     
@@ -597,16 +566,16 @@ public class GUI_Conexion extends javax.swing.JFrame {
     public boolean validarConexion (){
         boolean rta = false;
          if (r_con.existeConexion()) {
-             r_con.Connection();
+             r_con.abrirConexion();
              if (r_con.existeDatabase(nombre_BD_Sistema)){
                  r_con.setBase_datos(nombre_BD_Sistema);
-                 r_con.Connection();
+                 r_con.abrirConexion();
                  if (r_con.cantidadRegistros("Usuarios")>0){
                      rta = true;
                  }
-                 r_con.cierraConexion();
+                 r_con.cerrarConexion();
              }
-             r_con.cierraConexion();
+             r_con.cerrarConexion();
          }
          return (rta);
     }
@@ -634,7 +603,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
         fieldUsuario.setText(null);
         fieldContrasena.setText(null);
         labelMensaje.setText(" ");
-        radiobuttonSI.setSelected(true);
         buttonGuardar.setEnabled(false);
     }    
     
@@ -659,7 +627,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
             this.msj_usuario_Error("Complete TODOS los Campos.");
         }
         else{
-            r_con.Connection();
+            r_con.abrirConexion();
             if (checkboxAlta.isSelected()){
                 boolean rta = r_con.Insertar("INSERT INTO Usuarios VALUES ("
                     + "'"+fieldUsuarioAdmin.getText()+"','"+fieldContrasenaAdmin.getText()+"');");
@@ -687,7 +655,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 buttonCancelar.setEnabled(false);
             }
             cargarUsuarios ();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed
 
@@ -738,21 +706,21 @@ public class GUI_Conexion extends javax.swing.JFrame {
                             carpeta.mkdirs();
                         }
                         //conecto
-                        r_con.Connection();
+                        r_con.abrirConexion();
                         //creo la base de datos del sistema
                         r_con.crearDatabase_DIR(nombre_BD_Sistema, carpeta.getPath());
                         //cierro la conexion ya que ahora existe la BD del Sistema
-                        r_con.cierraConexion();
+                        r_con.cerrarConexion();
                         //seteo el nombre de la base de datos del sistema
                         r_con.setBase_datos(nombre_BD_Sistema);
                         //abro la nueva Conexion
-                        r_con.Connection();
+                        r_con.abrirConexion();
                         //ejecuto el script para cargar las tablas
                         r_con.executeScripts(script_BD_Sistema);
                         //guardo el directorio elegido en la tabla Directorios del Sistema
                         r_con.Insertar("INSERT INTO Directorios VALUES "
                             + "('Directorio_Database_Sistema','"+carpeta.getAbsolutePath()+"');");
-                        r_con.cierraConexion();
+                        r_con.cerrarConexion();
                     }
                 }
                 else{
@@ -774,22 +742,15 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
     private void buttonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGuardarActionPerformed
         boolean rta = false;
-        if (radiobuttonSI.isSelected()) {
-            rta = r_con.validarConexion(fieldURL.getText(), fieldPuerto.getText(), true, fieldUsuario.getText(), fieldContrasena.getText());
-        }
-        else {
-            rta = r_con.validarConexion(fieldURL.getText(), fieldPuerto.getText(), false, fieldUsuario.getText(), fieldContrasena.getText());
-        }
+
+        rta = r_con.validarConexion(fieldURL.getText(), fieldPuerto.getText(), fieldUsuario.getText(), fieldContrasena.getText());
+        
         if (rta) {
             r_con.setUrl(fieldURL.getText());
             if (!"".equals(fieldPuerto.getText())) {
                 r_con.setPort(fieldPuerto.getText());
             }
-            if (radiobuttonSI.isSelected()) {
-                r_con.setSeguridad_integrada(true);
-            } else {
-                r_con.setSeguridad_integrada(false);
-            }
+            
             r_con.setUsuario(fieldUsuario.getText());
             r_con.setClave(fieldContrasena.getText());
             r_con.grabarConexion(r_con);
@@ -806,12 +767,9 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
     private void buttonProbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProbarActionPerformed
         boolean rta = false;
-        if (radiobuttonSI.isSelected()) {
-            rta = r_con.validarConexion(fieldURL.getText(), fieldPuerto.getText(), true, fieldUsuario.getText(), fieldContrasena.getText());
-        } else {
-            rta = r_con.validarConexion(fieldURL.getText(), fieldPuerto.getText(), false, fieldUsuario.getText(), fieldContrasena.getText());
-        }
 
+        rta = r_con.validarConexion(fieldURL.getText(), fieldPuerto.getText(), fieldUsuario.getText(), fieldContrasena.getText());
+        
         if (rta) {
             msj_conexion_Exito();
             buttonGuardar.setEnabled(true);
@@ -819,23 +777,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
             msj_conexion_Error();
         }
     }//GEN-LAST:event_buttonProbarActionPerformed
-
-    private void radiobuttonUyCItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_radiobuttonUyCItemStateChanged
-        // TODO add your handling code here:
-        if (radiobuttonUyC.isSelected()) {
-            fieldUsuario.setEnabled(true);
-            fieldContrasena.setEnabled(true);
-        }
-    }//GEN-LAST:event_radiobuttonUyCItemStateChanged
-
-    private void radiobuttonSIItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_radiobuttonSIItemStateChanged
-        if (radiobuttonSI.isSelected()) {
-            fieldUsuario.setText("");
-            fieldContrasena.setText("");
-            fieldUsuario.setEnabled(false);
-            fieldContrasena.setEnabled(false);
-        }
-    }//GEN-LAST:event_radiobuttonSIItemStateChanged
 
     private void tabbedPaneOpcionesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneOpcionesStateChanged
         if (tabbedPaneOpciones.getSelectedIndex()==2){
@@ -888,8 +829,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
     private javax.swing.JPanel panelConexion;
     private javax.swing.JPanel panelDirectorio;
     private javax.swing.JPanel panelUsuarios;
-    private javax.swing.JRadioButton radiobuttonSI;
-    private javax.swing.JRadioButton radiobuttonUyC;
     private javax.swing.JTabbedPane tabbedPaneOpciones;
     // End of variables declaration//GEN-END:variables
 
@@ -922,7 +861,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
     }
     
     private void cargarUsuarios (){
-        r_con.Connection();  
+        r_con.abrirConexion();  
         DefaultTableModel modelo = new DefaultTableModel();
         String [] nombre_columnas = {"Usuario","Contraseña"};                           
         modelo.setColumnIdentifiers(nombre_columnas);               
@@ -931,7 +870,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
             modelo.addRow(a);
         
         jTable1.setModel(modelo);
-        r_con.cierraConexion();
+        r_con.cerrarConexion();
     }
 
 }

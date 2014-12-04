@@ -30,7 +30,7 @@ public class Tareas {
     public Vector<Vector<String>> getDescripcionTareas(){        
         Vector<Vector<String>>v = new Vector();         
          try{
-            r_con.Connection();
+            r_con.abrirConexion();
             String consulta="SELECT tar_descripcion FROM "+tabla;
             ResultSet rs=r_con.Consultar(consulta);
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -43,11 +43,11 @@ public class Tareas {
                 v.add(arregloAux);                
             }
             rs.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
          }
          catch(Exception e){
              System.out.println("Error Interno: Tareas - getDescripcionTareas");
-             r_con.cierraConexion();
+             r_con.cerrarConexion();
              return null;
          }
          return v;             
@@ -57,7 +57,7 @@ public class Tareas {
     public Vector<Vector<String>> getTablaTareas(){        
         Vector<Vector<String>>v = new Vector();         
          try{
-            r_con.Connection();
+            r_con.abrirConexion();
             String consulta="SELECT * FROM "+tabla;
             Statement st = r_con.getStatement();
             ResultSet rs = st.executeQuery(consulta);
@@ -72,11 +72,11 @@ public class Tareas {
             } 
             st.close();
             rs.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
          }
          catch(Exception e){
             System.out.println("Error Interno: Tareas - getTablaTareas");
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
             return null;
          }
          return v;             
@@ -85,7 +85,7 @@ public class Tareas {
     
     public void insertar(Tarea t){
         try {
-            r_con.Connection();
+            r_con.abrirConexion();
             PreparedStatement consultaAlta;
             String alta="INSERT INTO "+tabla+" VALUES (?,?)";
             consultaAlta=r_con.getConn().prepareStatement(alta);
@@ -96,11 +96,11 @@ public class Tareas {
             consultaAlta.executeUpdate();
             
             consultaAlta.close();
-            r_con.cierraConexion();                                            
+            r_con.cerrarConexion();                                            
         
         } catch (SQLException ex) {
             System.out.println("Error Interno: Tareas - insertar");
-            r_con.cierraConexion();   
+            r_con.cerrarConexion();   
         }
     }
     

@@ -33,7 +33,7 @@ public class Perfiles {
      * @return Devuelve un string con el nombre del perfil
      */
     public String getDescripcion(int perfil){
-        r_con.Connection();
+        r_con.abrirConexion();
         String res="";
         try {            
             Statement stmt=r_con.getStatement();
@@ -43,10 +43,10 @@ public class Perfiles {
                 res=rs.getString(1);            
             stmt.close();
             rs.close();            
-            r_con.cierraConexion();           
+            r_con.cerrarConexion();           
         } catch (SQLException ex) {
             System.out.println("Error Interno: Perfiles - getDescripcion");
-            r_con.cierraConexion();            
+            r_con.cerrarConexion();            
         }
         return res;
     }
@@ -54,7 +54,7 @@ public class Perfiles {
     public Vector<Vector<String>> getTablaPerfiles(){        
         Vector<Vector<String>>v = new Vector();         
          try{
-            r_con.Connection();
+            r_con.abrirConexion();
             String consulta="SELECT * FROM "+tabla;
             ResultSet rs=r_con.Consultar(consulta);
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -67,11 +67,11 @@ public class Perfiles {
                 v.add(arregloAux);                
             }  
             rs.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
          }
          catch(Exception e){
              System.out.println("Error Interno: Perfiles - getTablaPerfiles");
-             r_con.cierraConexion();
+             r_con.cerrarConexion();
              return null;
          }
          return v;             
@@ -79,7 +79,7 @@ public class Perfiles {
     
     public void insertar(Perfil p){
         try {
-            r_con.Connection();
+            r_con.abrirConexion();
             PreparedStatement consultaAlta;
             String alta="INSERT INTO "+tabla+" VALUES (?,?)";
             consultaAlta=r_con.getConn().prepareStatement(alta);            
@@ -87,10 +87,10 @@ public class Perfiles {
             consultaAlta.setString(2, p.getDescripcion());            
             consultaAlta.executeUpdate();
             consultaAlta.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
                                                     
         } catch (SQLException ex) {
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
             System.out.println("Error Interno: Perfiles - insertar");           
         }
     }
@@ -98,7 +98,7 @@ public class Perfiles {
     public Perfil getPerfil(int id_perfil){
         Perfil p=new Perfil();
         try{
-            r_con.Connection();
+            r_con.abrirConexion();
             String consulta="SELECT * FROM "+tabla+" WHERE prf_id_perfil="+id_perfil;
             Statement stmt=r_con.getStatement();
             ResultSet rs;
@@ -108,11 +108,11 @@ public class Perfiles {
                 p.setDescripcion(rs.getString(2));                
             }
             stmt.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
         } 
         catch (SQLException ex) 
         {
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
             System.out.println("Error Interno: Perfiles - insertar");
         }        
         return p;

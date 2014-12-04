@@ -323,7 +323,7 @@ public class GUI_Empresa extends javax.swing.JFrame {
     private void crearEmpresa (){
         if (this.validarCampos()){
             r_con.setBase_datos(nombre_BD_Sistema);
-            r_con.Connection();
+            r_con.abrirConexion();
             if (existeRazonSocial(fieldRazonSocial.getText())){
                 this.msj_Error("Razón Social ya Registrada.");
                 fieldRazonSocial.requestFocus();
@@ -344,8 +344,8 @@ public class GUI_Empresa extends javax.swing.JFrame {
                     r_con.crearDatabase_DIR(nameinterno, directorio);
                     //** paso del Sistema a la BD de la empresa
                     r_con.setBase_datos(nameinterno);
-                    r_con.cierraConexion();
-                    r_con.Connection();           
+                    r_con.cerrarConexion();
+                    r_con.abrirConexion();           
 
                     r_con.executeScripts("SQLQuery_Load_DB_Empresa.sql");
                     r_con.Insertar("INSERT INTO usuario VALUES ('"+
@@ -358,14 +358,14 @@ public class GUI_Empresa extends javax.swing.JFrame {
                     String valores = "'"+fieldFechaInicio.getText()+"','"+fieldFechaFin.getText()+"',0,'"+fieldFechaInicio.getText()+"',0,0,0";
                     String sql = "INSERT INTO parametros_contables values ("+valores+");";
                     r_con.Insertar(sql);
-                    r_con.cierraConexion();
+                    r_con.cerrarConexion();
                     this.dispose();
                     sesion.setVisible(true);                       
                 } catch (SQLException ex) {
-                    r_con.cierraConexion();
+                    r_con.cerrarConexion();
                     Logger.getLogger(GUI_Empresa.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {            
-                    r_con.cierraConexion();
+                    r_con.cerrarConexion();
                 }
             }  
         }        

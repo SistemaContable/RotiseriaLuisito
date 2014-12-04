@@ -30,7 +30,7 @@ public class Permisos {
     public Vector<Vector<String>> getTablaPermisos(){        
          Vector<Vector<String>>v = new Vector();         
          try{
-            r_con.Connection();
+            r_con.abrirConexion();
             String consulta="SELECT * FROM "+tabla;
             Statement st = r_con.getStatement();
             ResultSet rs = st.executeQuery(consulta);
@@ -45,11 +45,11 @@ public class Permisos {
             } 
             st.close();
             rs.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
          }
          catch(Exception e){
              System.out.println("Error Interno: Permisos - getTablaPermisos"); 
-             r_con.cierraConexion();
+             r_con.cerrarConexion();
              return null;
          }
          return v;             
@@ -58,7 +58,7 @@ public class Permisos {
     
     public void insertar(Permiso p){
         try {
-            r_con.Connection();
+            r_con.abrirConexion();
             PreparedStatement consultaAlta;
             String alta="INSERT INTO "+tabla+" VALUES (?,?,?)";
             consultaAlta=r_con.getConn().prepareStatement(alta);
@@ -69,11 +69,11 @@ public class Permisos {
             consultaAlta.executeUpdate();// insert update delete
             
             consultaAlta.close();
-            r_con.cierraConexion();                                           
+            r_con.cerrarConexion();                                           
         
         } catch (SQLException ex) {
             System.out.println("Error Interno: Permisos - insertar");
-            r_con.cierraConexion(); 
+            r_con.cerrarConexion(); 
         }
         
         
@@ -82,7 +82,7 @@ public class Permisos {
     public Vector<Vector<String>> getContenidoTablaPermisos(int perfil){
          Vector<Vector<String>>v=new Vector();         
          try{       
-            r_con.Connection();
+            r_con.abrirConexion();
             
             // distinct lo que hace es sacar los modulos repetidos en el campo mod_descripcion 
             ResultSet rs = r_con.Consultar(""
@@ -100,11 +100,11 @@ public class Permisos {
             }  
             
             rs.close();
-            r_con.cierraConexion();
+            r_con.cerrarConexion();
          }
          catch(Exception e){
              System.out.println("Error Interno: Permisos - getContenidoTablaPermisos");
-             r_con.cierraConexion();
+             r_con.cerrarConexion();
              return null;
          }
          return v;
