@@ -768,8 +768,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
     private void buttonProbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProbarActionPerformed
         boolean rta = false;
 
-        rta = r_con.validarConexion(fieldURL.getText(), fieldPuerto.getText(), fieldUsuario.getText(), fieldContrasena.getText());
-        
+        rta = r_con.validarConexion(fieldURL.getText(), fieldPuerto.getText(), fieldUsuario.getText(), fieldContrasena.getText());        
         if (rta) {
             msj_conexion_Exito();
             buttonGuardar.setEnabled(true);

@@ -33,7 +33,7 @@ public class Conexion{
     private String url;
     private String port;
     //puerto por defecto del Sistema Gestor de Base de Datos.
-    private String port_default = "3306";
+    private String port_default = "2020";
     private String usuario;
     private String clave;    
     private String driverClassName;
@@ -50,13 +50,15 @@ public class Conexion{
     
     public Conexion() {
         //asigno parametros basicos, ya que los valores los leo del archivo        
-        this.driverClassName = "com.mysql.jdbc.Driver"; 
+        //Class.forName("com.mysql.jdbc.Driver").newInstance();
+        this.driverClassName="com.mysql.jdbc.Driver";
+       // this.driverClassName = "com.mysql.jdbc.Driver";         
         this.jdbc = "jdbc:mysql://";
         this.port = this.port_default;
-        this.url = "";
-        this.usuario="";
-        this.clave="";
-        this.base_datos="";
+        this.url ="localhost";// "jdbc:mysql://localhost:2020/";
+        this.usuario="root";
+        this.clave="1234";
+        this.base_datos="bd_rotiseria";
         this.razon_social="";
     }      
     
@@ -141,9 +143,11 @@ public class Conexion{
         }    
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            String urlConexion = jdbc+n_url+":"+n_port+"/?user="+n_usu+"&password="+n_cla;
-            this.conn = DriverManager.getConnection(urlConexion);            
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            //Class.forName("com.mysql.jdbc.Driver");  "jdbc:mysql://"            
+            String urlConexion = jdbc+n_url+":"+n_port+"/"+this.base_datos;
+            //String urlConexion = jdbc+n_url+":"+n_port+"/?user="+n_usu+"&password="+n_cla;            
+            this.conn = DriverManager.getConnection(urlConexion,n_usu,n_cla);                        
             valida = true;
             conn.close();
         } catch (SQLException ex) {
@@ -164,6 +168,10 @@ public class Conexion{
             }            
             JOptionPane.showMessageDialog(null,"Código del ERROR: "+ex.getErrorCode()+"\nMensaje del ERROR: "+ error, "Error al intentar establecer la Conexión", JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -267,8 +275,10 @@ public class Conexion{
             //creo el statament (antes conectar a la bd)
             stnt  = conn.createStatement();
             //consulto, cuenta si existe una bd con ese nombre, devuelve 1 si existe, 0 sino
-            rslset = stnt.executeQuery("SELECT COUNT(*) FROM sys.databases " +
-                                       "WHERE [NAME] = '"+nombre+"';");
+            rslset = stnt.executeQuery("use "+nombre);            
+            
+            //rslset = stnt.executeQuery("SELECT COUNT(*) FROM sys.databases " +ghg
+            //                           "WHERE [NAME] = '"+nombre+"';");
             rslset.next();
             existe = ("1".equals(rslset.getString(1)));
             stnt.close();
@@ -287,36 +297,8 @@ public class Conexion{
      * @return String
      */
     private String getUrlConexion (){        
-        String urlConexion = "";
-        
-        //pregunto si el url es vacio, quiere decir que se intento extablecer una 
-        //conexion por primera vez, por eso, leo los parametros del archivo de Conexion
-        if ("".equals(url)){
-            if  (existeConexion ()) {
-                //si existe el achivo ahora si leo los parametros, sino, aviso
-                leerConexion();
-            }
-            else{
-                String msj = ("El Sistema no encuentra el archivo con los parametros "
-                           + "necesarios para establecer \nuna Conexión con el SGBD, "
-                           + "por favor póngase en contacto con el Administrador \npara "
-                           + "que el mismo sea generado.");
-                JOptionPane.showMessageDialog(null, msj, "Error de Conexión", JOptionPane.ERROR_MESSAGE);
-            }            
-        }
-        
-        //si url no es vacio, los parametros ya fueron leidos del archivo        
-        urlConexion = jdbc+url+":"+port+"/";
-        
-        if (!"".equals(base_datos)){
-            urlConexion+=base_datos+"?";
-        }  
-        else{
-            urlConexion+="?";
-        }
-        
-        urlConexion +="user="+usuario+"&password="+clave;
-        System.out.println("CONEXION: "+urlConexion);
+        String urlConexion = "";        
+        urlConexion = jdbc+url+":"+port+"/bd_rotiseria";       
         return urlConexion;
     }
     
@@ -460,9 +442,9 @@ public class Conexion{
     {     
         try
         {                           
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             String cadenaUrl=getUrlConexion();            
-            this.conn = DriverManager.getConnection(cadenaUrl);
+            this.conn = DriverManager.getConnection(cadenaUrl,usuario,clave);
             //this.conn = DriverManager.getConnection(urlConexion,this.usuario,this.clave);             
         }
         catch(ClassNotFoundException ex)
@@ -471,10 +453,13 @@ public class Conexion{
             conn=null;
         }
         catch(SQLException ex)
-        {
-            
+        {            
             JOptionPane.showMessageDialog(null, ex, "Error Tipo 2 en la Conexión con la BD: "+"\n"+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
             conn=null;
+        } catch (InstantiationException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
    

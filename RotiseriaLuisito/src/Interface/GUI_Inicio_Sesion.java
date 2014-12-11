@@ -8,6 +8,7 @@ package Interface;
 
 import Colecciones.Usuarios;
 import Auxiliares.Conexion;
+import Objetos.Perfil;
 import Objetos.Usuario;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -19,11 +20,12 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Manolo
+ * @author GB_Software
  */
 public class GUI_Inicio_Sesion extends javax.swing.JFrame {
 
     private Conexion r_con;
+    private Usuario usuario;
     private final String nombre_BD_Sistema = "BD_Sistema";
     private ResultSet rsl;
     
@@ -33,11 +35,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         setResizable(false);
         
         r_con = con;
-        r_con.setBase_datos(nombre_BD_Sistema);
-        cargarComboBox();
-        comboboxTipoUsuario.setSelectedIndex(0);
-        buttonConfiguracionConexion.setEnabled(false);
-        buttonConfiguracionEmpresa.setEnabled(false);
+        r_con.setBase_datos(nombre_BD_Sistema);         
         fieldUsuario.requestFocusInWindow();
     }
 
@@ -51,16 +49,10 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
     private void initComponents() {
 
         labelImagenUsuario = new javax.swing.JLabel();
-        comboboxTipoUsuario = new javax.swing.JComboBox();
-        comboboxEmpresa = new javax.swing.JComboBox();
         fieldUsuario = new javax.swing.JTextField();
         passwordfieldContrasena = new javax.swing.JPasswordField();
         buttonIniciarSesion = new javax.swing.JButton();
         buttonSalir = new javax.swing.JButton();
-        buttonConfiguracionEmpresa = new javax.swing.JButton();
-        buttonConfiguracionConexion = new javax.swing.JButton();
-        labelTipoUsuario = new javax.swing.JLabel();
-        labelEmpresa = new javax.swing.JLabel();
         labelMensaje = new javax.swing.JLabel();
         labelUsuario = new javax.swing.JLabel();
         labelContrasena = new javax.swing.JLabel();
@@ -71,20 +63,6 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
 
         labelImagenUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelImagenUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/u_emp.png"))); // NOI18N
-
-        comboboxTipoUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Usuario de Empresa", "Usuario del Sistema" }));
-        comboboxTipoUsuario.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                comboboxTipoUsuarioItemStateChanged(evt);
-            }
-        });
-
-        comboboxEmpresa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "item" }));
-        comboboxEmpresa.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                comboboxEmpresaItemStateChanged(evt);
-            }
-        });
 
         fieldUsuario.setToolTipText("");
 
@@ -118,35 +96,13 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
             }
         });
 
-        buttonConfiguracionEmpresa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/botonemp.png"))); // NOI18N
-        buttonConfiguracionEmpresa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonConfiguracionEmpresaActionPerformed(evt);
-            }
-        });
-
-        buttonConfiguracionConexion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/configuracion.png"))); // NOI18N
-        buttonConfiguracionConexion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonConfiguracionConexionActionPerformed(evt);
-            }
-        });
-
-        labelTipoUsuario.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        labelTipoUsuario.setText("Tipo Usuario:");
-
-        labelEmpresa.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        labelEmpresa.setText("Empresa:");
-
         labelMensaje.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         labelMensaje.setForeground(new java.awt.Color(0, 153, 51));
         labelMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelMensaje.setText(" ");
 
-        labelUsuario.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         labelUsuario.setText("Usuario:");
 
-        labelContrasena.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         labelContrasena.setText("Contraseña:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -154,12 +110,6 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labelImagenUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(buttonConfiguracionEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonConfiguracionConexion, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(194, 194, 194))
             .addComponent(labelMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(57, Short.MAX_VALUE)
@@ -178,32 +128,13 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                             .addComponent(buttonSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(buttonIniciarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(184, 184, 184))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelEmpresa)
-                        .addGap(18, 18, 18)
-                        .addComponent(comboboxEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelTipoUsuario)
-                        .addGap(18, 18, 18)
-                        .addComponent(comboboxTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 101, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(labelImagenUsuario)
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelTipoUsuario)
-                    .addComponent(comboboxTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelEmpresa)
-                    .addComponent(comboboxEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(labelMensaje)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -213,15 +144,11 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelContrasena)
                     .addComponent(passwordfieldContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(48, 48, 48)
                 .addComponent(buttonIniciarSesion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonSalir)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonConfiguracionConexion)
-                    .addComponent(buttonConfiguracionEmpresa))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
@@ -241,23 +168,34 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
             fieldUsuario.requestFocus();
         }
         else{        
-            this.vaciarMensaje();
-            if (comboboxTipoUsuario.getSelectedIndex()==1){
-                try {                   
-                    r_con.setBase_datos(nombre_BD_Sistema);
+            this.vaciarMensaje();            
+                try {                                       
                     r_con.abrirConexion();
-                    rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
+                    rsl = r_con.Consultar("SELECT * FROM bd_rotiseria.usuario WHERE usr_id = '"+
                                     fieldUsuario.getText()+"' AND usr_contrasenia = '"+
-                                    passwordfieldContrasena.getText()+"';");
-                    rsl.next();
-                    int existe = Integer.parseInt(rsl.getString(1));
-                    rsl.close();
-                    if (existe > 0){
-                        fieldUsuario.setEnabled(false);
-                        passwordfieldContrasena.setEnabled(false);
-                        buttonIniciarSesion.setEnabled(false);
-                        buttonConfiguracionConexion.setEnabled(true);
-                        buttonConfiguracionEmpresa.setEnabled(true);                        
+                                    passwordfieldContrasena.getText()+"';");                                                            
+                    if (rsl.next()){
+                        usuario=new Usuario();
+                        usuario.setUsuario(rsl.getString(1));
+                        usuario.setNombre(rsl.getString(2));
+                        usuario.setApellido(rsl.getString(3));
+                        usuario.setContraseña(rsl.getString(4));
+                        Perfil perfil=new Perfil();
+                        ResultSet rsPerfil=r_con.Consultar("select * from bd_rotiseria.perfil where prf_id="+rsl.getInt(5));
+                        rsPerfil.next();
+                        perfil.setId(rsPerfil.getInt(1));
+                        perfil.setDescripcion(rsPerfil.getString(2));
+                        usuario.setPerfil(perfil);
+                        usuario.setExiste(rsl.getBoolean(6));
+                        if(usuario.getExiste()){
+                            GUI_Principal guip=new GUI_Principal(usuario,r_con);
+                            guip.setVisible(true);
+                            dispose();                      
+                        }
+                        else{
+                            msj_usuario_Error("El usuario esta dado de baja.");
+                            fieldUsuario.requestFocus();
+                        }
                     }
                     else{
                         msj_usuario_Error("Usuario del Sistema o Contraseña INCORRECTOS.");
@@ -268,129 +206,13 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                 catch (SQLException ex) {
                     Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            else{
-                try {
-                    if (comboboxEmpresa.getItemCount() > 0){
-                        r_con.setBase_datos(nombre_BD_Sistema);
-                        r_con.abrirConexion();
-                        String empresa = comboboxEmpresa.getSelectedItem().toString();                   
-                        rsl = r_con.Consultar("SELECT * FROM Empresas WHERE razon_social = '"+
-                                            ""+empresa+"';");
-                        rsl.next();       
-                            String razon_social = rsl.getString(1);    
-                            String nameinterno = rsl.getString(2);
-                        rsl.close();
-                    
-                        r_con.cerrarConexion();
-                        r_con.setBase_datos(nameinterno);
-                        r_con.setRazon_social(razon_social);
-                        r_con.abrirConexion();                     
-                        
-                        String usuario="";
-                        usuario=fieldUsuario.getText();
-                        String pass="";
-                        pass=passwordfieldContrasena.getText();
-                        
-                        if((!usuario.equals(""))&&(!pass.equals(""))){
-                            Usuarios usuarios = new Usuarios(r_con);
-                            Usuario u=usuarios.getUsuario(usuario);
-                            if(u!=null){
-                                if(!u.getExiste())
-                                {
-                                    msj_usuario_Error("El Usuario de la Empresa esta dado de Baja.");
-                                }
-                                else
-                                {
-                                    if(u.getContraseña().equals(pass)){                                        
-                                        this.dispose();                                         
-                                        //r_con.setUsuario(u.getUsuario());                                                                                
-                                        new GUI_Principal(u,r_con).setVisible(true);
-                                        
-                                        dispose();
-                                    }
-                                    else
-                                    {
-                                        msj_usuario_Error("La Contraseña no es Correcta.");
-                                    }
-                                }
-                            }                                                
-                            else
-                                msj_usuario_Error("El Usuario ingresado no Existe.");
-                        }
-                          
-                    }                           
-                    else{                                
-                        msj_usuario_Error("No hay Empresas Registradas.");
-                    }
+                finally {
                     r_con.cerrarConexion();
-                } 
-                catch (SQLException ex) {
-                    Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
-                } finally {
-                    r_con.cerrarConexion();
-                }
-            }
+                }            
         }
     }
     
     
-    private void buttonConfiguracionConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConfiguracionConexionActionPerformed
-        if ("".equals(fieldUsuario.getText())){
-            msj_usuario_Error("Ingrese un Usuario del Sistema, por favor.");
-            fieldUsuario.requestFocus();
-        }
-        else{        
-            try {
-                this.vaciarMensaje();
-                r_con.setBase_datos(nombre_BD_Sistema);
-                r_con.abrirConexion();
-                rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
-                            fieldUsuario.getText()+"' AND usr_contrasenia = '"+
-                            passwordfieldContrasena.getText()+"';");
-                rsl.next();
-                int existe = Integer.parseInt(rsl.getString(1));
-                rsl.close();
-                if (existe > 0){
-                    this.dispose();
-                    GUI_Conexion gui = new GUI_Conexion();
-                    gui.GUI_configuracion();
-                    gui.setVisible(true);
-                }
-                else{
-                    msj_usuario_Error("Usuario del Sistema o Contraseña INCORRECTOS.");
-                    fieldUsuario.requestFocus();
-                }
-                r_con.cerrarConexion();
-            } catch (SQLException ex) {
-                Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_buttonConfiguracionConexionActionPerformed
-
-    private void comboboxTipoUsuarioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboboxTipoUsuarioItemStateChanged
-        // TODO add your handling code here:
-        if (comboboxTipoUsuario.getSelectedIndex()==0){
-            labelImagenUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/u_emp.png")));
-            comboboxEmpresa.setEnabled(true);
-            buttonConfiguracionEmpresa.setEnabled(false);
-            buttonConfiguracionConexion.setEnabled(false);
-        }
-        else{            
-            fieldUsuario.requestFocus();
-            labelImagenUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/u_sis.png")));
-            comboboxEmpresa.setEnabled(false);
-        }
-        fieldUsuario.setText("");
-        passwordfieldContrasena.setText("");
-    }//GEN-LAST:event_comboboxTipoUsuarioItemStateChanged
-
-    private void buttonConfiguracionEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConfiguracionEmpresaActionPerformed
-        this.setVisible(false);
-        GUI_Empresa gui = new GUI_Empresa(this.r_con,this);                    
-        gui.setVisible(true);
-    }//GEN-LAST:event_buttonConfiguracionEmpresaActionPerformed
-
     private void passwordfieldContrasenaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordfieldContrasenaKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode()==10)
@@ -402,37 +224,15 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         passwordfieldContrasena.setText("");
     }//GEN-LAST:event_passwordfieldContrasenaFocusGained
 
-    private void comboboxEmpresaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboboxEmpresaItemStateChanged
-        // TODO add your handling code here:
-        fieldUsuario.requestFocus();
-    }//GEN-LAST:event_comboboxEmpresaItemStateChanged
-    
-    private void cargarComboBox(){
-        r_con.abrirConexion();
-        comboboxEmpresa.removeAllItems();
-        Vector<Vector<String>> v = r_con.getContenidoTabla("SELECT * FROM Empresas");
-        for(Vector<String>a:v){
-            comboboxEmpresa.addItem(a.elementAt(0));
-        }    
-        //jComboBox1.addItem("< Nueva_Empresa >");
-        v=null;
-        r_con.cerrarConexion();
-    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonConfiguracionConexion;
-    private javax.swing.JButton buttonConfiguracionEmpresa;
     private javax.swing.JButton buttonIniciarSesion;
     private javax.swing.JButton buttonSalir;
-    private javax.swing.JComboBox comboboxEmpresa;
-    private javax.swing.JComboBox comboboxTipoUsuario;
     private javax.swing.JTextField fieldUsuario;
     private javax.swing.JLabel labelContrasena;
-    private javax.swing.JLabel labelEmpresa;
     private javax.swing.JLabel labelImagenUsuario;
     private javax.swing.JLabel labelMensaje;
-    private javax.swing.JLabel labelTipoUsuario;
     private javax.swing.JLabel labelUsuario;
     private javax.swing.JPasswordField passwordfieldContrasena;
     // End of variables declaration//GEN-END:variables
